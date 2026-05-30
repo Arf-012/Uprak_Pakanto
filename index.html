@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retro Web Game Collection</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- =============================================
+       SCENE 0: MAIN MENU
+       Overlay berbasis DOM/HTML yang ditampilkan
+       di atas canvas saat game belum dimulai.
+  ============================================== -->
+    <div id="scene-menu" class="scene active">
+      <div class="menu-container">
+        <div class="menu-scanline"></div>
+        <div class="menu-header">
+          <div class="pixel-logo">
+            <span class="logo-line-1">◀ RETRO WEB ▶</span>
+            <span class="logo-line-2">GAME COLLECTION</span>
+            <span class="logo-line-3">● ─────────────── ●</span>
+          </div>
+          <p class="menu-subtitle blink">── INSERT COIN ──</p>
+        </div>
+
+        <div class="game-select-grid">
+          <!-- Kartu Game A -->
+          <div class="game-card" id="card-2d" onclick="selectGame('2d')">
+            <div class="card-screen">
+              <div class="card-pixel-art-2d">
+                <!-- Pixel art sederhana dengan CSS untuk preview game 2D -->
+                <div class="pa-sky"></div>
+                <div class="pa-platform-row">
+                  <div class="pa-platform"></div>
+                  <div class="pa-coin">✦</div>
+                  <div class="pa-platform"></div>
+                </div>
+                <div class="pa-player-preview">▲</div>
+                <div class="pa-ground"></div>
+              </div>
+            </div>
+            <div class="card-info">
+              <span class="card-label">GAME — A</span>
+              <span class="card-title">AZKABOY<br />ADVENTURE</span>
+              <span class="card-genre">2D PLATFORMER</span>
+            </div>
+            <div class="card-select-indicator" id="ind-2d">▶ SELECTED ◀</div>
+          </div>
+
+          <!-- Kartu Game B -->
+          <div class="game-card" id="card-3d" onclick="selectGame('3d')">
+            <div class="card-screen">
+              <div class="card-pixel-art-3d">
+                <div class="pa3-floor"></div>
+                <div class="pa3-walls">
+                  <div class="pa3-wall-l"></div>
+                  <div class="pa3-wall-c">
+                    <div class="pa3-chip">◈</div>
+                  </div>
+                  <div class="pa3-wall-r"></div>
+                </div>
+                <div class="pa3-ceiling"></div>
+              </div>
+            </div>
+            <div class="card-info">
+              <span class="card-label">GAME — B</span>
+              <span class="card-title">TECH LAB<br />ESCAPE</span>
+              <span class="card-genre">PSEUDO-3D FPS</span>
+            </div>
+            <div class="card-select-indicator" id="ind-3d"></div>
+          </div>
+        </div>
+
+        <div class="menu-actions">
+          <button
+            class="btn-retro btn-play"
+            id="btn-play"
+            onclick="startGame()"
+          >
+            <span class="btn-icon">▶</span> PLAY GAME
+          </button>
+        </div>
+
+        <div class="menu-footer">
+          <span>HTML5 · CSS3 · VANILLA JS CANVAS</span>
+          <span>NO EXTERNAL LIBRARIES</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =============================================
+       SCENE 1: GAMEPLAY
+       Canvas aktif + UI Overlay HUD di atasnya
+  ============================================== -->
+    <div id="scene-game" class="scene">
+      <!-- HUD (Heads-Up Display) — overlay di atas canvas -->
+      <div id="game-hud">
+        <div class="hud-left">
+          <span class="hud-label">SCORE</span>
+          <span class="hud-value" id="hud-score">0</span>
+        </div>
+        <div class="hud-center">
+          <!-- Timer hanya muncul untuk game 3D -->
+          <span class="hud-label" id="hud-timer-label" style="display: none"
+            >TIME</span
+          >
+          <span class="hud-value" id="hud-timer" style="display: none">60</span>
+        </div>
+        <div class="hud-right">
+          <button class="btn-hud" onclick="returnToMenu()">✕ MENU</button>
+        </div>
+      </div>
+
+      <!-- Canvas utama — semua render 2D dan 3D dilakukan di sini -->
+      <canvas id="gameCanvas"></canvas>
+
+      <!-- Crosshair statis untuk game 3D (ditampilkan via CSS/JS) -->
+      <div id="crosshair">
+        <div class="ch-h"></div>
+        <div class="ch-v"></div>
+      </div>
+
+      <!-- Prompt interaksi untuk game 3D -->
+      <div id="prompt-e" class="prompt-overlay">
+        Press <kbd>E</kbd> to Collect
+      </div>
+    </div>
+
+    <!-- =============================================
+       SCENE 2: WIN / LOSE SCREEN
+       Overlay hasil akhir permainan
+  ============================================== -->
+    <div id="scene-result" class="scene">
+      <div class="result-container">
+        <div class="result-scanline"></div>
+        <div id="result-icon" class="result-icon"></div>
+        <div id="result-title" class="result-title"></div>
+        <div id="result-subtitle" class="result-subtitle"></div>
+        <div class="result-score-box">
+          <span class="result-score-label">FINAL SCORE</span>
+          <span id="result-score" class="result-score-value">0</span>
+        </div>
+        <div class="result-actions">
+          <button class="btn-retro btn-play" onclick="returnToMenu()">
+            <span class="btn-icon">◀</span> MAIN MENU
+          </button>
+          <button
+            class="btn-retro btn-secondary"
+            id="btn-retry"
+            onclick="retryGame()"
+          >
+            <span class="btn-icon">↺</span> RETRY
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Muat logika game setelah DOM siap -->
+    <script src="script.js"></script>
+  </body>
+</html>
